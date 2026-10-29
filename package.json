@@ -2,7 +2,7 @@
   "name": "codecook",
   "displayName": "CodeCook",
   "description": "A powerful coding add-on for VS Code, Cursor, Antigravity, and compatible IDEs. Keep the quality. Cut the cost.",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "publisher": "makayis",
   "icon": "media/icon-white.png",
   "repository": {
