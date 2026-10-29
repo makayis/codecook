@@ -1,22 +1,44 @@
 # CodeCook
 
-### A powerful coding add-on for VS Code, Cursor, Antigravity, and compatible IDEs.
+**Keep the quality. Cut the cost.** A BYOK coding agent for VS Code, Cursor, Antigravity, and compatible editors.
 
-## Keep the quality. Cut the cost.
-
-Bring your own key and build with bigger models, without the token anxiety.
+[![VS Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/makayis.codecook?label=VS%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=makayis.codecook)
+[![VS Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/makayis.codecook)](https://marketplace.visualstudio.com/items?itemName=makayis.codecook)
+[![Open VSX Version](https://img.shields.io/open-vsx/v/makayis/codecook?label=Open%20VSX)](https://open-vsx.org/extension/makayis/codecook)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/makayis/codecook?style=social)](https://github.com/makayis/codecook)
 
 ![CodeCook demo](docs/demo.gif)
 
+## Install
+
+```bash
+code --install-extension makayis.codecook
+```
+
+Or install from [VS Marketplace](https://marketplace.visualstudio.com/items?itemName=makayis.codecook) or [Open VSX](https://open-vsx.org/extension/makayis/codecook).
+
+**If CodeCook saved you tokens, a star helps others find it.** ⭐
+
 ---
 
-## Why I built CodeCook
+## Why CodeCook
 
 I wanted to spend more time building. Not worrying about tokens.
 
 Long chats resend everything you already paid for: every old message and every tool output, on every turn. The bill keeps growing even when the work doesn't.
 
 CodeCook fixes that at the source. It **summarizes the older turns**, **keeps your plan in reach**, and **shows what each turn will cost**, so you can use the bigger models you actually want.
+
+## How the compression works
+
+CodeCook monitors your context usage. When older messages would exceed the budget threshold (configurable, default 20% of your context window), it runs a summarization pass:
+
+1. **Older turns are compressed** — your recent work stays intact, but earlier messages and tool outputs are replaced with a compact summary
+2. **Plans survive** — any active plan remains accessible so the agent stays on track
+3. **You keep building** — the next turn uses the compressed history instead of resending everything
+
+The token optimizer shows you the before/after comparison for each turn. One session can save hundreds of thousands of tokens.
 
 ## What you get
 
@@ -88,6 +110,10 @@ Token budgets, tool-result limits, and per-million token prices are also configu
 
 - Your provider credentials and settings are stored only in your local editor install (VS Code, Cursor, Antigravity, etc.).
 - Once a day, when editor telemetry is enabled (in VS Code, Cursor, Antigravity, etc.), CodeCook sends an anonymous activation ping: a random install id, the editor name, and the extension version. It does not include your code, files, prompts, or account. Turn it off with the `codecook.usagePing` setting.
+
+## Contributing
+
+Contributions are welcome! Check out the [good first issues](https://github.com/makayis/codecook/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) to get started.
 
 ## License
 

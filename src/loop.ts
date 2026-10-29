@@ -145,6 +145,7 @@ export class AgentLoop {
           this.summaryFailed = true;
         }
         if (summarized === "ok") {
+          this.emit({ type: "summarized" });
           this.emit({
             type: "status",
             message: "Summarized earlier messages. Continuing with the compact history.",

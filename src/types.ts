@@ -170,6 +170,7 @@ export type TurnEvent =
   | { type: "todos_updated"; todos: Todo[]; plan?: Partial<Plan> }
   | { type: "questions"; questions: PlanQuestion[] }
   | { type: "summarizing" }
+  | { type: "summarized" }
   | { type: "status"; message: string }
   | { type: "error"; error: string }
   | { type: "done" }
