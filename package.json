@@ -1,0 +1,290 @@
+{
+  "name": "codecook",
+  "displayName": "CodeCook",
+  "description": "A powerful coding add-on for VS Code, Cursor, Antigravity, and compatible IDEs. Keep the quality. Cut the cost.",
+  "version": "2.3.3",
+  "publisher": "makayis",
+  "icon": "media/icon-white.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/makayis/codecook"
+  },
+  "license": "MIT",
+  "galleryBanner": {
+    "color": "#0f1720",
+    "theme": "dark"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "coding agent",
+    "cursor",
+    "antigravity",
+    "gemini",
+    "vertex ai",
+    "chat",
+    "assistant",
+    "code review"
+  ],
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "AI",
+    "Chat",
+    "Programming Languages",
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onView:codecook.chat"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "codecookSidebar",
+          "title": "CodeCook",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "codecookSidebar": [
+        {
+          "type": "webview",
+          "id": "codecook.chat",
+          "name": "CodeCook"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "codecook.openChat",
+        "title": "CodeCook: Open Chat"
+      },
+      {
+        "command": "codecook.newChat",
+        "title": "CodeCook: New Chat"
+      },
+      {
+        "command": "codecook.cancel",
+        "title": "CodeCook: Cancel"
+      },
+      {
+        "command": "codecook.buildPlan",
+        "title": "CodeCook: Build Plan"
+      },
+      {
+        "command": "codecook.openPlan",
+        "title": "CodeCook: Open Plan"
+      },
+      {
+        "command": "codecook.showChanges",
+        "title": "CodeCook: Show Changes"
+      },
+      {
+        "command": "codecook.openTokens",
+        "title": "CodeCook: Token Optimizer"
+      },
+      {
+        "command": "codecook.savingsReport",
+        "title": "CodeCook: Savings Report"
+      },
+      {
+        "command": "codecook.summarizeChat",
+        "title": "CodeCook: Summarize Chat"
+      },
+      {
+        "command": "codecook.openAllDiffs",
+        "title": "CodeCook: Open All Diffs",
+        "icon": "$(diff)"
+      },
+      {
+        "command": "codecook.keepAll",
+        "title": "CodeCook: Keep All Changes",
+        "icon": "$(check)"
+      },
+      {
+        "command": "codecook.revertAll",
+        "title": "CodeCook: Revert All Changes",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "codecook.addSelectionToChat",
+        "title": "Add to Chat",
+        "category": "CodeCook"
+      },
+      {
+        "command": "codecook.addTerminalToChat",
+        "title": "Add to Chat",
+        "category": "CodeCook"
+      },
+      {
+        "command": "codecook.addFileToChat",
+        "title": "Add to CodeCook Chat",
+        "category": "CodeCook"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "codecook.addSelectionToChat",
+          "when": "editorHasSelection",
+          "group": "9_cutcopypaste@1"
+        }
+      ],
+      "terminal/context": [
+        {
+          "command": "codecook.addTerminalToChat",
+          "when": "terminalFocus",
+          "group": "navigation"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "codecook.addFileToChat",
+          "when": "!explorerResourceIsFolder",
+          "group": "navigation@99"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "codecook.addFileToChat",
+          "when": "resourceScheme == file",
+          "group": "navigation@99"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "CodeCook",
+      "properties": {
+        "codecook.gcpProject": {
+          "type": "string",
+          "default": "",
+          "description": "Your Google Cloud project id used for Vertex AI."
+        },
+        "codecook.gcpLocation": {
+          "type": "string",
+          "default": "global",
+          "description": "Vertex AI location. Use global for the shared endpoint."
+        },
+        "codecook.model": {
+          "type": "string",
+          "default": "gemini-3.1-pro-preview",
+          "description": "Default Gemini model for agent turns."
+        },
+        "codecook.summaryModel": {
+          "type": "string",
+          "default": "gemini-2.5-flash",
+          "description": "Summary model when that id is enabled on the signed-in account. Otherwise CodeCook picks a small model for that account."
+        },
+        "codecook.contextTokenBudget": {
+          "type": "number",
+          "default": 250000
+        },
+        "codecook.contextTokenBudgetCeiling": {
+          "type": "number",
+          "default": 250000
+        },
+        "codecook.contextSummarizeThreshold": {
+          "type": "number",
+          "default": 0.2,
+          "description": "Fraction of the context budget at which older chat can be summarized. This is a trigger, not a savings target."
+        },
+        "codecook.contextKeepRecentGroups": {
+          "type": "number",
+          "default": 6
+        },
+        "codecook.contextMinCompactableTokens": {
+          "type": "number",
+          "default": 8000,
+          "description": "Minimum tokens outside the opening message and the recent groups before a summary runs."
+        },
+        "codecook.toolResultMaxChars": {
+          "type": "number",
+          "default": 8000
+        },
+        "codecook.summaryToolResultMaxChars": {
+          "type": "number",
+          "default": 1200
+        },
+        "codecook.contextRefMaxChars": {
+          "type": "number",
+          "default": 16000
+        },
+        "codecook.planBodyMaxChars": {
+          "type": "number",
+          "default": 20000
+        },
+        "codecook.llmMaxCompletionTokens": {
+          "type": "number",
+          "default": 8192
+        },
+        "codecook.turnTokenCeiling": {
+          "type": "number",
+          "default": 1000000
+        },
+        "codecook.attachmentImageTokenCost": {
+          "type": "number",
+          "default": 1200
+        },
+        "codecook.pricePromptPerMillionFlash": {
+          "type": "number",
+          "default": 0.15,
+          "description": "USD per million prompt tokens for Gemini Flash."
+        },
+        "codecook.priceCompletionPerMillionFlash": {
+          "type": "number",
+          "default": 0.6,
+          "description": "USD per million completion tokens for Gemini Flash."
+        },
+        "codecook.pricePromptPerMillionPro": {
+          "type": "number",
+          "default": 1.25,
+          "description": "USD per million prompt tokens for Gemini Pro."
+        },
+        "codecook.priceCompletionPerMillionPro": {
+          "type": "number",
+          "default": 10,
+          "description": "USD per million completion tokens for Gemini Pro."
+        },
+        "codecook.spendLimitDailyUsd": {
+          "type": "number",
+          "default": 0,
+          "description": "Estimated daily spend cap in USD. 0 means no cap."
+        },
+        "codecook.spendLimitWeeklyUsd": {
+          "type": "number",
+          "default": 0,
+          "description": "Estimated weekly spend cap in USD. 0 means no cap."
+        },
+        "codecook.spendLimitMonthlyUsd": {
+          "type": "number",
+          "default": 0,
+          "description": "Estimated monthly spend cap in USD. 0 means no cap."
+        },
+        "codecook.usagePing": {
+          "type": "boolean",
+          "default": true,
+          "description": "Send an anonymous daily activation ping with a random install id, the editor name, and the extension version. No code, files, prompts, or account data is included. The ping is also skipped when editor telemetry is off."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "dependencies": {
+    "google-auth-library": "^9.15.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "@types/vscode": "^1.85.0",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.7.0"
+  }
+}

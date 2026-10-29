@@ -1,0 +1,14 @@
+src/**
+scripts/**
+.esbuild.mjs
+tsconfig.json
+.gitignore
+node_modules/**
+**/*.map
+**/*.ts
+*.vsix
+CONTRIBUTING.md
+docs/**
+media/*.gif
+.vscode/**
+!out/extension.js
