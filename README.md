@@ -6,7 +6,7 @@
 
 Bring your own key and build with bigger models, without the token anxiety.
 
-![CodeCook demo](https://makayis-codebaker-19a4d.web.app/assets/demo.gif)
+![CodeCook demo](docs/demo.gif)
 
 ---
 
@@ -22,9 +22,9 @@ CodeCook fixes that at the source. It **summarizes the older turns**, **keeps yo
 
 | | |
 | --- | --- |
-| **Less repetition** | Older turns and bulky tool output are compressed into a short summary instead of being resent every time. You pay for new work, not old work.<br><br><img src="https://makayis-codebaker-19a4d.web.app/assets/usage.png" alt="CodeCook token meter: 98% saved this turn, 800,787 tokens down to 14,857" width="196" align="left" hspace="12"><b>800,787 → 14,857 tokens</b><br>One turn in a long agent session, after CodeCook's compression. That is about <b>98% fewer tokens</b> on that turn, with the plan and the work intact. |
+| **Less repetition** | Older turns and bulky tool output are compressed into a short summary instead of being resent every time. You pay for new work, not old work.<br><br><img src="docs/usage.png" alt="CodeCook token meter: 98% saved this turn, 800,787 tokens down to 14,857" width="196" align="left" hspace="12"><b>800,787 → 14,857 tokens</b><br>One turn in a long agent session, after CodeCook's compression. That is about <b>98% fewer tokens</b> on that turn, with the plan and the work intact. |
 | **Your plan stays in reach** | Plans survive summarization. Build one, reopen it from the command palette, and the agent keeps following it in long sessions. |
-| **See the cost** | A token optimizer, savings report, and spend estimates for Gemini Flash and Pro. Set daily, weekly, or monthly caps so a long session never surprises you.<br><br><img src="https://makayis-codebaker-19a4d.web.app/assets/details.png" alt="CodeCook cost details: tokens, cache, and monthly cap" width="210"> |
+| **See the cost** | A token optimizer, savings report, and spend estimates for Gemini Flash and Pro. Set daily, weekly, or monthly caps so a long session never surprises you.<br><br><img src="docs/details.png" alt="CodeCook cost details: tokens, cache, and monthly cap" width="210"> |
 | **Version control for every turn** | Each turn is checkpointed. Review native diffs, keep all edits, revert them, or rewind to an earlier turn and restore your files. |
 
 ## Built for real work
