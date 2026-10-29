@@ -1331,6 +1331,9 @@ document.getElementById("btn-enter")?.addEventListener("click", () => {
   if (loginErr) loginErr.textContent = "";
   vscode.postMessage({ type: "enterApp" });
 });
+document.getElementById("btn-github")?.addEventListener("click", () => {
+  vscode.postMessage({ type: "openGithub" });
+});
 document.getElementById("btn-account")?.addEventListener("click", (event) => {
   event.stopPropagation();
   const menu = document.getElementById("account-menu");

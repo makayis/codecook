@@ -120,6 +120,9 @@ export class MakayisChatView implements vscode.WebviewViewProvider {
       result = ok
         ? "Chat summarized. Future turns use the compact history."
         : "Summarize failed.";
+      if (ok) {
+        await this.trackSummarization();
+      }
     } catch (err) {
       this.post({ type: "error", error: err instanceof Error ? err.message : String(err) });
     } finally {
@@ -309,6 +312,9 @@ export class MakayisChatView implements vscode.WebviewViewProvider {
           break;
         case "openLink":
           await this.openExternalLink(msg.url);
+          break;
+        case "openGithub":
+          await vscode.env.openExternal(vscode.Uri.parse("https://github.com/makayis/codecook"));
           break;
       }
     } catch (err) {
@@ -691,6 +697,9 @@ export class MakayisChatView implements vscode.WebviewViewProvider {
     if (event.type === "context" || event.type === "usage") {
       this.tokenPanel.update(event);
     }
+    if (event.type === "summarized") {
+      void this.trackSummarization();
+    }
   }
 
   activeChatId(): string | undefined {
@@ -1010,6 +1019,50 @@ export class MakayisChatView implements vscode.WebviewViewProvider {
     void vscode.commands.executeCommand("setContext", "codecook.signedIn", signedIn);
   }
 
+  private async trackSummarization(): Promise<void> {
+    const SUMMARIZATION_COUNT_KEY = "codecook.summarizationCount";
+    const STAR_PROMPT_SHOWN_COUNT_KEY = "codecook.starPromptShownCount";
+    const STAR_PROMPT_DISMISSED_KEY = "codecook.starPromptDismissed";
+    
+    const dismissed = this.context.globalState.get<boolean>(STAR_PROMPT_DISMISSED_KEY, false);
+    if (dismissed) {
+      return;
+    }
+
+    const count = this.context.globalState.get<number>(SUMMARIZATION_COUNT_KEY, 0) + 1;
+    await this.context.globalState.update(SUMMARIZATION_COUNT_KEY, count);
+
+    const shownCount = this.context.globalState.get<number>(STAR_PROMPT_SHOWN_COUNT_KEY, 0);
+    if (shownCount >= 2) {
+      return;
+    }
+
+    if (count >= 10 && count % 10 === 0) {
+      await this.showStarPrompt(shownCount);
+    }
+  }
+
+  private async showStarPrompt(currentShownCount: number): Promise<void> {
+    const STAR_PROMPT_SHOWN_COUNT_KEY = "codecook.starPromptShownCount";
+    const STAR_PROMPT_DISMISSED_KEY = "codecook.starPromptDismissed";
+
+    const action = await vscode.window.showInformationMessage(
+      "Enjoying CodeCook? A GitHub star helps others find it.",
+      "Star on GitHub",
+      "Not now",
+      "Don't ask again"
+    );
+
+    await this.context.globalState.update(STAR_PROMPT_SHOWN_COUNT_KEY, currentShownCount + 1);
+
+    if (action === "Star on GitHub") {
+      await vscode.env.openExternal(vscode.Uri.parse("https://github.com/makayis/codecook"));
+      await this.context.globalState.update(STAR_PROMPT_DISMISSED_KEY, true);
+    } else if (action === "Don't ask again") {
+      await this.context.globalState.update(STAR_PROMPT_DISMISSED_KEY, true);
+    }
+  }
+
   private post(event: TurnEvent | Record<string, unknown>): void {
     this.view?.webview.postMessage(event);
   }
@@ -1119,6 +1172,11 @@ export class MakayisChatView implements vscode.WebviewViewProvider {
           <path d="M5 19.2c1.2-3.2 3.8-4.7 7-4.7s5.8 1.5 7 4.7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
         </svg>
       </button>
+      <button id="btn-github" class="icon-btn" title="Source on GitHub" aria-label="Source on GitHub" style="margin-left: 8px;">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="currentColor" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+        </svg>
+      </button>
       <div id="account-menu" class="account-menu hidden" role="menu">
         <div class="account-head">
           <span id="account-avatar" class="account-avatar">A</span>
@@ -1147,6 +1205,7 @@ export class MakayisChatView implements vscode.WebviewViewProvider {
         <div class="signin-actions">
           <button type="button" id="btn-enter" class="gate-primary">Enter</button>
         </div>
+        <p class="gate-sub" style="margin-top: 12px;"><a href="https://github.com/makayis/codecook" style="color: var(--vscode-textLink-foreground);">Source on GitHub</a></p>
         <p id="login-error" class="gate-error"></p>
       </div>
     </div>

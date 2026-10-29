@@ -1,0 +1,86 @@
+name: Bug Report
+description: Report a bug or unexpected behavior
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the form below.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear description of what the bug is
+      placeholder: What happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Steps to reproduce the behavior
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What you expected to happen
+      placeholder: What should have happened?
+    validations:
+      required: true
+
+  - type: input
+    id: editor
+    attributes:
+      label: Editor and version
+      description: Which editor are you using?
+      placeholder: e.g., VS Code 1.95.0, Cursor 0.42.0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: provider
+    attributes:
+      label: Provider
+      description: Which AI provider are you using?
+      options:
+        - Google Gemini (Vertex AI)
+        - Google Gemini (API Key)
+        - OpenAI / ChatGPT
+        - Anthropic Claude
+        - Azure OpenAI
+        - AWS Bedrock
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: model
+    attributes:
+      label: Model
+      description: Which model were you using when the bug occurred?
+      placeholder: e.g., gemini-3.1-pro-preview, gpt-4, claude-3-5-sonnet
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: |
+        Paste any relevant error messages or logs. Open Output → CodeCook to see extension logs.
+      placeholder: Paste logs here
+      render: text
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Add any other context about the problem
+      placeholder: Any additional information that might help

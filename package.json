@@ -9,6 +9,8 @@
     "type": "git",
     "url": "https://github.com/makayis/codecook"
   },
+  "homepage": "https://www.codecook.makayis.com/",
+  "bugs": "https://github.com/makayis/codecook/issues",
   "license": "MIT",
   "galleryBanner": {
     "color": "#0f1720",
